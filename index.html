@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pongetti.net</title>
+  <style>
+    :root {
+      --bg: #f7f5f0;
+      --ink: #1f2328;
+      --muted: #6b7280;
+      --accent: #2f6f5e;
+      --card: #ffffff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #14161a;
+        --ink: #e8e6e1;
+        --muted: #9aa0a6;
+        --accent: #6fb8a2;
+        --card: #1d2026;
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, 'Times New Roman', serif;
+      line-height: 1.7;
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 15vh 24px 48px;
+      flex: 1;
+    }
+    h1 {
+      font-size: 2.4rem;
+      font-weight: normal;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+    }
+    h1 .dot { color: var(--accent); }
+    p.lede {
+      font-size: 1.15rem;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+    }
+    section {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    section h2 {
+      font-size: 0.85rem;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    section p { color: var(--ink); }
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Hello<span class="dot">.</span></h1>
+    <p class="lede">Welcome — you’ve found a quiet corner of the internet.</p>
+
+    <section>
+      <h2>About this site</h2>
+      <p>A simple, personal home on the web. More to come, in due time.</p>
+    </section>
+
+    <section>
+      <h2>Now</h2>
+      <p>Tinkering with ideas, reading, and building small things.</p>
+    </section>
+  </main>
+  <footer>pongetti.net</footer>
+</body>
+</html>
