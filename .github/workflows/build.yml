@@ -1,0 +1,47 @@
+name: Build feed
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'posts/**'
+      - 'scripts/**'
+      - '.github/workflows/build.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# One build at a time; a second post while a build runs queues up instead of racing.
+concurrency:
+  group: build-feed
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build feed (fetch link metadata, paginate, RSS)
+        run: node scripts/build-feed.mjs
+
+      - name: Commit generated feed
+        run: |
+          git config user.name "feed-bot"
+          git config user.email "feed-bot@users.noreply.github.com"
+          git add -A posts feed feed.xml
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+            exit 0
+          fi
+          git commit -m "build: feed $(date -u +%Y-%m-%dT%H:%M:%SZ) [skip ci]"
+          # another post may have landed meanwhile
+          git pull --rebase origin main || true
+          git push origin HEAD:main

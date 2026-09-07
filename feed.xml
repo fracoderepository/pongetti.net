@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>pongetti.net</title>
+  <link>https://www.pongetti.net/</link>
+  <atom:link href="https://www.pongetti.net/feed.xml" rel="self" type="application/rss+xml"/>
+  <description>Links worth a minute of your time.</description>
+  <lastBuildDate>Mon, 07 Sep 2026 23:38:02 GMT</lastBuildDate>
+  <item>
+    <title>This site now runs entirely on GitHub Pages — posts are JSON files, an Action builds the feed. #meta</title>
+    <link>https://pages.github.com/</link>
+    <guid isPermaLink="false">2026-09-07T221503Z-a1b2</guid>
+    <pubDate>Mon, 07 Sep 2026 22:15:03 GMT</pubDate>
+    <description><![CDATA[This site now runs entirely on GitHub Pages — posts are JSON files, an Action builds the feed. #meta]]></description>
+  </item>
+  <item>
+    <title>The API behind the infinite scroll here. Surprisingly little code.</title>
+    <link>https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver</link>
+    <guid isPermaLink="false">2026-09-06T091200Z-c3d4</guid>
+    <pubDate>Sun, 06 Sep 2026 09:12:00 GMT</pubDate>
+    <description><![CDATA[The API behind the infinite scroll here. Surprisingly little code.]]></description>
+  </item>
+  <item>
+    <title>How a web page can show up in Android's Share menu without being an app. #pwa</title>
+    <link>https://web.dev/articles/web-share-target</link>
+    <guid isPermaLink="false">2026-09-04T183000Z-e5f6</guid>
+    <pubDate>Fri, 04 Sep 2026 18:30:00 GMT</pubDate>
+    <description><![CDATA[How a web page can show up in Android's Share menu without being an app. #pwa]]></description>
+  </item>
+  <item>
+    <title>https://docs.github.com/en/rest/repos/contents</title>
+    <link>https://docs.github.com/en/rest/repos/contents</link>
+    <guid isPermaLink="false">2026-09-01T120000Z-g7h8</guid>
+    <pubDate>Tue, 01 Sep 2026 12:00:00 GMT</pubDate>
+    <description><![CDATA[]]></description>
+  </item>
+</channel>
+</rss>

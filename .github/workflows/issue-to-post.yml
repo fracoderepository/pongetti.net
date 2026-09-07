@@ -1,0 +1,70 @@
+name: Issue to post (fallback)
+
+# Backup way to post without a token: open an issue whose title (or body) contains the link.
+# Only issues opened by the repo owner are converted; everything else is ignored.
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  convert:
+    if: github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create post file
+        id: create
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const issue = context.payload.issue;
+            const text = `${issue.title}\n${issue.body || ''}`;
+            const m = text.match(/https?:\/\/[^\s)>\]]+/);
+            if (!m) { core.setOutput('skipped', 'true'); return; }
+            const url = m[0];
+            const note = text.replace(url, '').replace(/\s+/g, ' ').trim();
+            const d = new Date().toISOString();
+            const id = d.slice(0,10) + 'T' + d.slice(11,19).replace(/:/g,'') + 'Z-i' + issue.number;
+            const post = { id, url, note, created: d.replace(/\.\d{3}Z$/, 'Z') };
+            fs.mkdirSync('posts', { recursive: true });
+            fs.writeFileSync(`posts/${id}.json`, JSON.stringify(post, null, 2) + '\n');
+            core.setOutput('id', id);
+
+      - name: Commit
+        if: steps.create.outputs.skipped != 'true'
+        run: |
+          git config user.name "feed-bot"
+          git config user.email "feed-bot@users.noreply.github.com"
+          git add posts
+          git commit -m "post (from issue #${{ github.event.issue.number }})"
+          git pull --rebase origin main || true
+          git push origin HEAD:main
+
+      - name: Build feed now (pushes by GITHUB_TOKEN do not trigger build.yml)
+        if: steps.create.outputs.skipped != 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - if: steps.create.outputs.skipped != 'true'
+        run: |
+          node scripts/build-feed.mjs
+          git add -A posts feed feed.xml
+          git diff --cached --quiet || git commit -m "build: feed [skip ci]"
+          git pull --rebase origin main || true
+          git push origin HEAD:main
+
+      - name: Close issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const skipped = '${{ steps.create.outputs.skipped }}' === 'true';
+            const body = skipped ? 'No link found in this issue, nothing posted.' : 'Posted as `posts/${{ steps.create.outputs.id }}.json`. Live in about a minute.';
+            await github.rest.issues.createComment({ ...context.repo, issue_number: context.payload.issue.number, body });
+            await github.rest.issues.update({ ...context.repo, issue_number: context.payload.issue.number, state: 'closed' });
