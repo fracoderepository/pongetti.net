@@ -2,5 +2,12 @@
   "id": "2026-09-07T221503Z-a1b2",
   "url": "https://pages.github.com/",
   "note": "This site now runs entirely on GitHub Pages — posts are JSON files, an Action builds the feed. #meta",
-  "created": "2026-09-07T22:15:03Z"
+  "created": "2026-09-07T22:15:03Z",
+  "meta": {
+    "title": "GitHub Pages",
+    "description": "Websites for you and your projects, hosted directly from your GitHub repository. Just edit, push, and your changes are live.",
+    "image": "",
+    "site": "GitHub Pages",
+    "fetched": "2026-09-07T23:53:21Z"
+  }
 }

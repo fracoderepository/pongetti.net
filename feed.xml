@@ -5,20 +5,20 @@
   <link>https://www.pongetti.net/</link>
   <atom:link href="https://www.pongetti.net/feed.xml" rel="self" type="application/rss+xml"/>
   <description>Links worth a minute of your time.</description>
-  <lastBuildDate>Mon, 07 Sep 2026 23:38:02 GMT</lastBuildDate>
+  <lastBuildDate>Mon, 07 Sep 2026 23:53:21 GMT</lastBuildDate>
   <item>
-    <title>This site now runs entirely on GitHub Pages — posts are JSON files, an Action builds the feed. #meta</title>
+    <title>GitHub Pages</title>
     <link>https://pages.github.com/</link>
     <guid isPermaLink="false">2026-09-07T221503Z-a1b2</guid>
     <pubDate>Mon, 07 Sep 2026 22:15:03 GMT</pubDate>
-    <description><![CDATA[This site now runs entirely on GitHub Pages — posts are JSON files, an Action builds the feed. #meta]]></description>
+    <description><![CDATA[This site now runs entirely on GitHub Pages — posts are JSON files, an Action builds the feed. #meta<br><br>Websites for you and your projects, hosted directly from your GitHub repository. Just edit, push, and your changes are live.]]></description>
   </item>
   <item>
-    <title>The API behind the infinite scroll here. Surprisingly little code.</title>
+    <title>IntersectionObserver - Web APIs | MDN</title>
     <link>https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver</link>
     <guid isPermaLink="false">2026-09-06T091200Z-c3d4</guid>
     <pubDate>Sun, 06 Sep 2026 09:12:00 GMT</pubDate>
-    <description><![CDATA[The API behind the infinite scroll here. Surprisingly little code.]]></description>
+    <description><![CDATA[The API behind the infinite scroll here. Surprisingly little code.<br><br>The IntersectionObserver interface of the Intersection Observer API provides a way to asynchronously observe changes in the intersection of a target element with an ancestor element or with a top-level document's viewpo…]]></description>
   </item>
   <item>
     <title>How a web page can show up in Android's Share menu without being an app. #pwa</title>
@@ -28,11 +28,11 @@
     <description><![CDATA[How a web page can show up in Android's Share menu without being an app. #pwa]]></description>
   </item>
   <item>
-    <title>https://docs.github.com/en/rest/repos/contents</title>
+    <title>REST API endpoints for repository contents - GitHub Docs</title>
     <link>https://docs.github.com/en/rest/repos/contents</link>
     <guid isPermaLink="false">2026-09-01T120000Z-g7h8</guid>
     <pubDate>Tue, 01 Sep 2026 12:00:00 GMT</pubDate>
-    <description><![CDATA[]]></description>
+    <description><![CDATA[Use the REST API to create, modify, and delete Base64 encoded content in a repository.]]></description>
   </item>
 </channel>
 </rss>

@@ -2,5 +2,15 @@
   "id": "2026-09-04T183000Z-e5f6",
   "url": "https://web.dev/articles/web-share-target",
   "note": "How a web page can show up in Android's Share menu without being an app. #pwa",
-  "created": "2026-09-04T18:30:00Z"
+  "created": "2026-09-04T18:30:00Z",
+  "meta": {
+    "title": "",
+    "description": "",
+    "image": "",
+    "site": "web.dev",
+    "fetched": "2026-09-07T23:53:20Z",
+    "failed": true,
+    "attempts": 1,
+    "error": "HTTP 404"
+  }
 }

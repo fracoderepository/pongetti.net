@@ -2,5 +2,12 @@
   "id": "2026-09-01T120000Z-g7h8",
   "url": "https://docs.github.com/en/rest/repos/contents",
   "note": "",
-  "created": "2026-09-01T12:00:00Z"
+  "created": "2026-09-01T12:00:00Z",
+  "meta": {
+    "title": "REST API endpoints for repository contents - GitHub Docs",
+    "description": "Use the REST API to create, modify, and delete Base64 encoded content in a repository.",
+    "image": "https://docs.github.com/assets/cb-345/images/social-cards/rest.png",
+    "site": "GitHub Docs",
+    "fetched": "2026-09-07T23:53:20Z"
+  }
 }

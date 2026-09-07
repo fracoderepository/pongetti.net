@@ -2,5 +2,12 @@
   "id": "2026-09-06T091200Z-c3d4",
   "url": "https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver",
   "note": "The API behind the infinite scroll here. Surprisingly little code.",
-  "created": "2026-09-06T09:12:00Z"
+  "created": "2026-09-06T09:12:00Z",
+  "meta": {
+    "title": "IntersectionObserver - Web APIs | MDN",
+    "description": "The IntersectionObserver interface of the Intersection Observer API provides a way to asynchronously observe changes in the intersection of a target element with an ancestor element or with a top-level document's viewpo…",
+    "image": "https://developer.mozilla.org/mdn-social-image.46ac2375.png",
+    "site": "MDN Web Docs",
+    "fetched": "2026-09-07T23:53:21Z"
+  }
 }
