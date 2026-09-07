@@ -2,93 +2,330 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>pongetti.net</title>
+  <meta name="description" content="Links Francesco found worth sharing.">
+  <meta property="og:title" content="pongetti.net">
+  <meta property="og:description" content="Links Francesco found worth sharing.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.pongetti.net/">
+  <meta name="theme-color" content="#f7f5f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#14161a" media="(prefers-color-scheme: dark)">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="alternate" type="application/rss+xml" title="pongetti.net" href="/feed.xml">
   <style>
     :root {
       --bg: #f7f5f0;
       --ink: #1f2328;
       --muted: #6b7280;
+      --faint: #9aa0a6;
       --accent: #2f6f5e;
       --card: #ffffff;
+      --line: rgba(0,0,0,0.07);
+      --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
     }
     @media (prefers-color-scheme: dark) {
       :root {
         --bg: #14161a;
         --ink: #e8e6e1;
         --muted: #9aa0a6;
+        --faint: #6b7280;
         --accent: #6fb8a2;
         --card: #1d2026;
+        --line: rgba(255,255,255,0.08);
+        --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.25);
       }
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
     body {
       background: var(--bg);
       color: var(--ink);
-      font-family: Georgia, 'Times New Roman', serif;
-      line-height: 1.7;
-      display: flex;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
       min-height: 100vh;
-      flex-direction: column;
+      padding-bottom: env(safe-area-inset-bottom);
     }
-    main {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 15vh 24px 48px;
-      flex: 1;
+    a { color: inherit; text-decoration: none; }
+
+    .wrap { max-width: 600px; margin: 0 auto; padding: 0 16px; }
+
+    header {
+      padding: 56px 0 28px;
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 16px;
+      animation: rise 500ms cubic-bezier(.2,.7,.2,1) both;
     }
     h1 {
-      font-size: 2.4rem;
+      font-family: Georgia, 'Times New Roman', serif;
       font-weight: normal;
+      font-size: 2rem;
       letter-spacing: -0.02em;
-      margin-bottom: 0.75rem;
+      line-height: 1.1;
     }
     h1 .dot { color: var(--accent); }
-    p.lede {
-      font-size: 1.15rem;
-      color: var(--muted);
-      margin-bottom: 2.5rem;
+    .tagline { color: var(--muted); font-size: 0.95rem; margin-top: 6px; }
+    .count { color: var(--faint); font-size: 0.8rem; white-space: nowrap; padding-bottom: 6px; font-variant-numeric: tabular-nums; }
+
+    .search {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--card); border: 1px solid var(--line); border-radius: 999px;
+      padding: 8px 14px; margin-bottom: 20px;
+      box-shadow: var(--shadow);
+      animation: rise 500ms 60ms cubic-bezier(.2,.7,.2,1) both;
     }
-    section {
+    .search svg { width: 16px; height: 16px; color: var(--faint); flex: none; }
+    .search input {
+      flex: 1; border: 0; outline: 0; background: transparent; color: var(--ink);
+      font: inherit; font-size: 0.95rem;
+    }
+    .search input::placeholder { color: var(--faint); }
+
+    .feed { display: flex; flex-direction: column; gap: 12px; }
+
+    .card {
       background: var(--card);
-      border-radius: 10px;
-      padding: 1.5rem 1.75rem;
-      margin-bottom: 1.25rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px 18px 12px;
+      box-shadow: var(--shadow);
+      opacity: 0; transform: translateY(12px);
+      animation: rise 380ms cubic-bezier(.2,.7,.2,1) both;
+      animation-delay: var(--d, 0ms);
+      transition: border-color 200ms, transform 200ms;
     }
-    section h2 {
-      font-size: 0.85rem;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
+    .card:hover { border-color: rgba(47,111,94,0.35); }
+    .card.hidden { display: none; }
+    @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+    .note { font-size: 1.05rem; line-height: 1.55; margin-bottom: 12px; white-space: pre-wrap; word-wrap: break-word; }
+    .note a.tag { color: var(--accent); }
+
+    .preview {
+      display: flex; gap: 14px; align-items: stretch;
+      border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+      background: var(--bg);
+      transition: background 200ms;
     }
-    section p { color: var(--ink); }
-    footer {
-      text-align: center;
-      padding: 24px;
-      color: var(--muted);
-      font-size: 0.85rem;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    .preview:hover { background: color-mix(in srgb, var(--bg) 70%, var(--card)); }
+    .preview .thumb {
+      flex: none; width: 108px; min-height: 96px; background: var(--line);
+      position: relative; overflow: hidden;
+    }
+    .preview .thumb img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      opacity: 0; transition: opacity 400ms ease;
+    }
+    .preview .thumb img.loaded { opacity: 1; }
+    .preview .thumb.wide { width: 100%; min-height: 0; aspect-ratio: 1.91; }
+    .preview.stack { flex-direction: column; gap: 0; }
+    .preview .text { padding: 12px 14px 12px 0; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 3px; }
+    .preview.stack .text, .preview.nothumb .text { padding-left: 14px; }
+    .preview .site { font-size: 0.78rem; color: var(--faint); letter-spacing: 0.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .preview .title { font-weight: 600; font-size: 0.95rem; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .preview .desc { font-size: 0.85rem; color: var(--muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+    .meta { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 0.8rem; color: var(--faint); }
+    .meta .sep { opacity: .5; }
+    .meta a:hover { color: var(--accent); }
+
+    .sentinel { height: 1px; }
+    .loader { display: flex; justify-content: center; padding: 28px 0 40px; }
+    .loader .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); opacity: 0; }
+    .loader.on .dot { animation: pulse 1.1s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity: .15; transform: scale(.8);} 50% { opacity: 1; transform: scale(1);} }
+    .end { text-align: center; color: var(--faint); font-size: 0.85rem; padding: 24px 0 48px; }
+    .empty { text-align: center; color: var(--muted); padding: 60px 0; }
+
+    footer { text-align: center; padding: 12px 0 40px; color: var(--faint); font-size: 0.8rem; }
+    footer a { color: var(--faint); }
+    footer a:hover { color: var(--accent); }
+
+    @media (max-width: 480px) {
+      header { padding-top: 40px; }
+      h1 { font-size: 1.75rem; }
+      .card { padding: 14px 14px 10px; border-radius: 14px; }
+      .preview .thumb { width: 92px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      header, .search, .card { animation: none !important; opacity: 1; transform: none; }
+      .preview .thumb img { transition: none; opacity: 1; }
+      .loader.on .dot { animation: none; opacity: .6; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Hello<span class="dot">.</span></h1>
-    <p class="lede">Welcome — you’ve found a quiet corner of the internet.</p>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>pongetti<span class="dot">.</span>net</h1>
+        <p class="tagline">Links worth a minute of your time.</p>
+      </div>
+      <div class="count" id="count"></div>
+    </header>
 
-    <section>
-      <h2>About this site</h2>
-      <p>A simple, personal home on the web. More to come, in due time.</p>
-    </section>
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Filter loaded links…" autocomplete="off">
+    </div>
 
-    <section>
-      <h2>Now</h2>
-      <p>Tinkering with ideas, reading, and building small things.</p>
-    </section>
-  </main>
-  <footer>pongetti.net</footer>
+    <main class="feed" id="feed"></main>
+    <div class="sentinel" id="sentinel"></div>
+    <div class="loader" id="loader"><div class="dot"></div></div>
+    <div class="end" id="end" hidden>That's everything.</div>
+
+    <footer><a href="/feed.xml">RSS</a></footer>
+  </div>
+
+  <script>
+  (() => {
+    const feedEl = document.getElementById('feed');
+    const sentinel = document.getElementById('sentinel');
+    const loader = document.getElementById('loader');
+    const endEl = document.getElementById('end');
+    const countEl = document.getElementById('count');
+    const q = document.getElementById('q');
+
+    let index = null;      // { pages, total, perPage }
+    let next = 1;          // next page to fetch
+    let loading = false;
+    let done = false;
+    const posts = [];
+
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+    function relTime(iso) {
+      const t = new Date(iso); const now = new Date();
+      const s = Math.max(0, (now - t) / 1000);
+      if (s < 60) return 'now';
+      if (s < 3600) return Math.floor(s/60) + 'm';
+      if (s < 86400) return Math.floor(s/3600) + 'h';
+      if (s < 86400 * 7) return Math.floor(s/86400) + 'd';
+      const opts = { month: 'short', day: 'numeric' };
+      if (t.getFullYear() !== now.getFullYear()) opts.year = 'numeric';
+      return t.toLocaleDateString(undefined, opts);
+    }
+    function fullTime(iso) {
+      return new Date(iso).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+    }
+    function hostOf(u) { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return u; } }
+
+    // turn URLs and #tags in the note into links
+    function richNote(text) {
+      let html = esc(text);
+      html = html.replace(/(https?:\/\/[^\s<]+)/g, m => `<a href="${m}" target="_blank" rel="noopener">${m}</a>`);
+      html = html.replace(/(^|\s)#([\p{L}\p{N}_-]+)/gu, (m, pre, tag) => `${pre}<a class="tag" href="?q=%23${encodeURIComponent(tag)}" data-tag="${esc(tag)}">#${esc(tag)}</a>`);
+      return html;
+    }
+
+    function render(post, i) {
+      const m = post.meta || {};
+      const site = m.site || hostOf(post.url);
+      const title = m.title || site;
+      const hasImg = !!m.image;
+      const stack = hasImg && m.imageWide;
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.style.setProperty('--d', (i * 40) + 'ms');
+      card.dataset.search = [post.note, title, m.description, site, post.url].join(' ').toLowerCase();
+      card.innerHTML = `
+        ${post.note ? `<p class="note">${richNote(post.note)}</p>` : ''}
+        ${post.url ? `
+        <a class="preview ${stack ? 'stack' : ''} ${hasImg ? '' : 'nothumb'}" href="${esc(post.url)}" target="_blank" rel="noopener">
+          ${hasImg ? `<div class="thumb ${stack ? 'wide' : ''}"><img loading="lazy" alt="" src="${esc(m.image)}"></div>` : ''}
+          <div class="text">
+            <div class="site">${esc(site)}</div>
+            <div class="title">${esc(title)}</div>
+            ${m.description ? `<div class="desc">${esc(m.description)}</div>` : ''}
+          </div>
+        </a>` : ''}
+        <div class="meta">
+          <a href="#${esc(post.id)}" id="${esc(post.id)}" title="${esc(fullTime(post.created))}"><time datetime="${esc(post.created)}">${relTime(post.created)}</time></a>
+          ${post.url ? `<span class="sep">·</span><a href="${esc(post.url)}" target="_blank" rel="noopener">${esc(hostOf(post.url))}</a>` : ''}
+        </div>`;
+      const img = card.querySelector('img');
+      if (img) {
+        const show = () => img.classList.add('loaded');
+        if (img.complete && img.naturalWidth) show(); else img.addEventListener('load', show);
+        img.addEventListener('error', () => { img.closest('.preview').classList.add('nothumb'); img.closest('.thumb').remove(); });
+      }
+      return card;
+    }
+
+    async function loadIndex() {
+      const r = await fetch('feed/index.json', { cache: 'no-cache' });
+      if (!r.ok) throw new Error('no index');
+      index = await r.json();
+      countEl.textContent = index.total ? `${index.total} link${index.total === 1 ? '' : 's'}` : '';
+      if (!index.pages) { finish(true); }
+    }
+
+    async function loadMore() {
+      if (loading || done) return;
+      loading = true; loader.classList.add('on');
+      try {
+        if (!index) await loadIndex();
+        if (done) return;
+        const r = await fetch(`feed/page-${next}.json`, { cache: 'no-cache' });
+        if (!r.ok) throw new Error('page ' + next);
+        const items = await r.json();
+        const frag = document.createDocumentFragment();
+        items.forEach((p, i) => { posts.push(p); frag.appendChild(render(p, i)); });
+        feedEl.appendChild(frag);
+        next++;
+        applyFilter();
+        if (next > index.pages) finish(posts.length === 0);
+      } catch (e) {
+        console.warn(e);
+        finish(posts.length === 0);
+      } finally {
+        loading = false; loader.classList.remove('on');
+        // if the sentinel is still visible (short page), keep going
+        if (!done && sentinelVisible()) loadMore();
+      }
+    }
+
+    function finish(empty) {
+      done = true;
+      io.disconnect();
+      loader.hidden = true;
+      if (empty) { feedEl.innerHTML = '<p class="empty">Nothing here yet.</p>'; }
+      else endEl.hidden = false;
+    }
+
+    function sentinelVisible() {
+      const r = sentinel.getBoundingClientRect();
+      return r.top < window.innerHeight + 600;
+    }
+
+    const io = new IntersectionObserver(entries => {
+      if (entries.some(e => e.isIntersecting)) loadMore();
+    }, { rootMargin: '600px 0px' });
+    io.observe(sentinel);
+
+    // client-side filter over loaded cards
+    function applyFilter() {
+      const term = q.value.trim().toLowerCase();
+      let shown = 0;
+      for (const c of feedEl.querySelectorAll('.card')) {
+        const hit = !term || c.dataset.search.includes(term);
+        c.classList.toggle('hidden', !hit);
+        if (hit) shown++;
+      }
+      endEl.textContent = term ? (shown ? `${shown} match${shown === 1 ? '' : 'es'} among loaded links.` : 'No matches among loaded links.') : "That's everything.";
+      if (term) { endEl.hidden = false; } else if (!done) { endEl.hidden = true; }
+    }
+    q.addEventListener('input', applyFilter);
+    feedEl.addEventListener('click', e => {
+      const t = e.target.closest('a.tag');
+      if (t) { e.preventDefault(); q.value = '#' + t.dataset.tag; applyFilter(); q.focus(); }
+    });
+    const initialQ = new URLSearchParams(location.search).get('q');
+    if (initialQ) q.value = initialQ;
+
+    loadMore();
+  })();
+  </script>
 </body>
 </html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Post · pongetti.net</title>
+  <meta name="theme-color" content="#f7f5f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#14161a" media="(prefers-color-scheme: dark)">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icons/icon-192.png">
+  <style>
+    :root {
+      --bg: #f7f5f0; --ink: #1f2328; --muted: #6b7280; --faint: #9aa0a6;
+      --accent: #2f6f5e; --accent-ink: #ffffff; --card: #ffffff; --line: rgba(0,0,0,0.08);
+      --danger: #b4463c; --ok: #2f6f5e;
+      --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #14161a; --ink: #e8e6e1; --muted: #9aa0a6; --faint: #6b7280;
+        --accent: #6fb8a2; --accent-ink: #0f1a16; --card: #1d2026; --line: rgba(255,255,255,0.09);
+        --danger: #e07b72; --ok: #6fb8a2;
+        --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.25);
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg); color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5; min-height: 100vh;
+      padding: 0 16px calc(24px + env(safe-area-inset-bottom));
+    }
+    a { color: var(--accent); text-decoration: none; }
+    .wrap { max-width: 520px; margin: 0 auto; }
+    header { display: flex; align-items: center; justify-content: space-between; padding: 36px 0 20px; animation: rise 400ms cubic-bezier(.2,.7,.2,1) both; }
+    h1 { font-family: Georgia, serif; font-weight: normal; font-size: 1.5rem; letter-spacing: -0.02em; }
+    h1 .dot { color: var(--accent); }
+    h1 a { color: inherit; }
+    .lock { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--faint); background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 5px 10px 5px 8px; cursor: pointer; }
+    .lock svg { width: 14px; height: 14px; }
+    .lock.ok { color: var(--ok); }
+
+    .panel { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; box-shadow: var(--shadow); animation: rise 400ms 60ms cubic-bezier(.2,.7,.2,1) both; }
+    .panel + .panel { margin-top: 14px; }
+    @keyframes rise { from { opacity: 0; transform: translateY(12px);} to { opacity: 1; transform: none;} }
+    label { display: block; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 6px 2px; }
+    .field { margin-bottom: 14px; }
+    input, textarea {
+      width: 100%; font: inherit; color: var(--ink); background: var(--bg);
+      border: 1px solid var(--line); border-radius: 10px; padding: 11px 12px; outline: none;
+      transition: border-color 150ms, box-shadow 150ms;
+    }
+    input:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent); }
+    textarea { min-height: 96px; resize: vertical; }
+    .hint { font-size: 0.8rem; color: var(--faint); margin-top: 6px; }
+    .row { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+    button {
+      font: inherit; font-weight: 600; border: 0; border-radius: 999px; padding: 11px 20px; cursor: pointer;
+      background: var(--accent); color: var(--accent-ink); transition: transform 120ms, opacity 150ms;
+    }
+    button:active { transform: scale(.97); }
+    button:disabled { opacity: .5; cursor: default; }
+    button.ghost { background: transparent; color: var(--muted); padding: 8px 10px; font-weight: 500; }
+    button.ghost:hover { color: var(--danger); }
+    .msg { font-size: 0.9rem; margin-top: 12px; }
+    .msg.err { color: var(--danger); }
+    .msg.ok { color: var(--ok); }
+    .done { text-align: center; padding: 28px 0 10px; }
+    .done .check { width: 56px; height: 56px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 14px; animation: pop 400ms cubic-bezier(.2,.9,.3,1.3) both; }
+    .done .check svg { width: 28px; height: 28px; }
+    @keyframes pop { from { transform: scale(.4); opacity: 0; } to { transform: none; opacity: 1; } }
+    .done h2 { font-weight: 600; font-size: 1.1rem; margin-bottom: 4px; }
+    .done p { color: var(--muted); font-size: 0.9rem; }
+    .done .actions { margin-top: 18px; display: flex; gap: 10px; justify-content: center; }
+    .done .actions a.btn { background: var(--accent); color: var(--accent-ink); border-radius: 999px; padding: 10px 18px; font-weight: 600; }
+    .done .actions a.alt { padding: 10px 14px; }
+    small.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.75rem; color: var(--faint); word-break: break-all; }
+    [hidden] { display: none !important; }
+    @media (prefers-reduced-motion: reduce) { header, .panel, .done .check { animation: none; } }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1><a href="/">pongetti<span class="dot">.</span>net</a> <span style="color:var(--faint);font-size:1rem">/ post</span></h1>
+    <button class="lock" id="lockBtn" type="button" title="Token settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      <span id="lockText">no token</span>
+    </button>
+  </header>
+
+  <!-- Token setup -->
+  <section class="panel" id="setup" hidden>
+    <div class="field">
+      <label for="token">GitHub fine-grained token</label>
+      <input id="token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…">
+      <div class="hint">Scoped to <b>fracoderepository/pongiof</b>, permission <b>Contents: read &amp; write</b>. Stored only in this browser.</div>
+    </div>
+    <div class="field">
+      <label for="pass">Passphrase <span style="text-transform:none;letter-spacing:0;color:var(--faint)">(optional)</span></label>
+      <input id="pass" type="password" autocomplete="off" placeholder="Encrypt the token at rest">
+      <div class="hint">If set, you'll type it each time you post. Leave empty to rely on your phone's lock screen.</div>
+    </div>
+    <div class="row">
+      <button type="button" id="saveToken">Save token</button>
+      <button type="button" class="ghost" id="forgetToken" hidden>Forget stored token</button>
+    </div>
+    <div class="msg" id="setupMsg"></div>
+  </section>
+
+  <!-- Compose -->
+  <section class="panel" id="compose">
+    <form id="form">
+      <div class="field">
+        <label for="url">Link</label>
+        <input id="url" type="url" inputmode="url" placeholder="https://…" autocomplete="off" required>
+      </div>
+      <div class="field">
+        <label for="note">Note <span style="text-transform:none;letter-spacing:0;color:var(--faint)">(optional)</span></label>
+        <textarea id="note" placeholder="Why it's worth a minute… #tags welcome"></textarea>
+      </div>
+      <div class="field" id="passField" hidden>
+        <label for="pass2">Passphrase</label>
+        <input id="pass2" type="password" autocomplete="off">
+      </div>
+      <div class="row">
+        <span class="hint" id="charCount"></span>
+        <button type="submit" id="postBtn">Post</button>
+      </div>
+      <div class="msg" id="msg"></div>
+    </form>
+  </section>
+
+  <section class="panel done" id="done" hidden>
+    <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></div>
+    <h2>Posted</h2>
+    <p>The feed rebuilds and goes live in about a minute.</p>
+    <p style="margin-top:8px"><small class="mono" id="doneFile"></small></p>
+    <div class="actions">
+      <a class="btn" href="/">Open feed</a>
+      <a class="alt" href="/post" id="again">Post another</a>
+    </div>
+  </section>
+</div>
+
+<script>
+(() => {
+  const OWNER = 'fracoderepository', REPO = 'pongiof', BRANCH = 'main';
+  const KEY = 'pn.token.v1';
+  const $ = id => document.getElementById(id);
+
+  // ---------- token storage (plain or AES-GCM encrypted with passphrase) ----------
+  const enc = new TextEncoder(), dec = new TextDecoder();
+  const b64 = b => btoa(String.fromCharCode(...new Uint8Array(b)));
+  const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  async function deriveKey(pass, salt) {
+    const base = await crypto.subtle.importKey('raw', enc.encode(pass), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: 250000, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+  }
+  async function saveToken(token, pass) {
+    let rec;
+    if (pass) {
+      const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+      const key = await deriveKey(pass, salt);
+      const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(token));
+      rec = { mode: 'enc', salt: b64(salt), iv: b64(iv), ct: b64(ct) };
+    } else rec = { mode: 'plain', token };
+    localStorage.setItem(KEY, JSON.stringify(rec));
+  }
+  function readRec() { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch { return null; } }
+  async function getToken(pass) {
+    const rec = readRec(); if (!rec) return null;
+    if (rec.mode === 'plain') return rec.token;
+    if (!pass) throw new Error('Passphrase needed.');
+    try {
+      const key = await deriveKey(pass, unb64(rec.salt));
+      const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(rec.iv) }, key, unb64(rec.ct));
+      return dec.decode(pt);
+    } catch { throw new Error('Wrong passphrase.'); }
+  }
+
+  // ---------- UI state ----------
+  function refreshLock() {
+    const rec = readRec();
+    const lock = $('lockBtn');
+    lock.classList.toggle('ok', !!rec);
+    $('lockText').textContent = rec ? (rec.mode === 'enc' ? 'token · encrypted' : 'token saved') : 'no token';
+    $('forgetToken').hidden = !rec;
+    $('passField').hidden = !(rec && rec.mode === 'enc');
+    $('compose').hidden = !rec;
+    $('setup').hidden = !!rec;
+  }
+  $('lockBtn').addEventListener('click', () => { $('setup').hidden = !$('setup').hidden; $('compose').hidden = !$('setup').hidden || !readRec(); });
+  $('saveToken').addEventListener('click', async () => {
+    const t = $('token').value.trim(), p = $('pass').value;
+    const m = $('setupMsg'); m.className = 'msg';
+    if (!/^(github_pat_|ghp_)/.test(t)) { m.classList.add('err'); m.textContent = 'That does not look like a GitHub token.'; return; }
+    $('saveToken').disabled = true; m.textContent = 'Checking token…';
+    try {
+      const r = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}`, { headers: { Authorization: 'Bearer ' + t, Accept: 'application/vnd.github+json' } });
+      if (!r.ok) throw new Error(r.status === 401 ? 'GitHub rejected the token.' : 'GitHub returned ' + r.status);
+      const j = await r.json();
+      if (!j.permissions || !j.permissions.push) throw new Error('Token has no write access to the repo.');
+      await saveToken(t, p);
+      $('token').value = ''; $('pass').value = '';
+      m.classList.add('ok'); m.textContent = 'Saved. You can post now.';
+      refreshLock(); $('url').focus();
+    } catch (e) { m.classList.add('err'); m.textContent = e.message; }
+    finally { $('saveToken').disabled = false; }
+  });
+  $('forgetToken').addEventListener('click', () => { localStorage.removeItem(KEY); $('setupMsg').textContent = 'Token forgotten.'; refreshLock(); });
+
+  // ---------- prefill from Web Share Target (?url=&text=&title=) ----------
+  const params = new URLSearchParams(location.search);
+  const shared = [params.get('url'), params.get('text'), params.get('title')].filter(Boolean).join(' ');
+  const found = shared.match(/https?:\/\/[^\s]+/);
+  if (found) {
+    $('url').value = found[0];
+    // Leftover text (minus the URL and the page title, which apps often echo) becomes the note draft
+    const title = (params.get('title') || '').trim();
+    let rest = shared.replace(found[0], '');
+    if (title) rest = rest.split(title).join('');
+    rest = rest.replace(/\s+/g, ' ').trim();
+    if (rest) $('note').value = rest;
+    setTimeout(() => $('note').focus(), 50);
+  } else if (params.get('text')) {
+    $('note').value = params.get('text');
+  }
+
+  $('note').addEventListener('input', () => { const n = $('note').value.length; $('charCount').textContent = n ? n + ' chars' : ''; });
+
+  // ---------- posting ----------
+  const utf8b64 = s => btoa(String.fromCharCode(...enc.encode(s)));
+  const newId = () => {
+    const d = new Date().toISOString(); // 2026-09-07T22:15:03.123Z
+    return d.slice(0, 10) + 'T' + d.slice(11, 19).replace(/:/g, '') + 'Z-' + Math.random().toString(36).slice(2, 6);
+  };
+  $('form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const m = $('msg'); m.className = 'msg'; m.textContent = '';
+    let url = $('url').value.trim(); const note = $('note').value.trim();
+    if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+    try { new URL(url); } catch { m.classList.add('err'); m.textContent = 'That link does not look valid.'; return; }
+    $('postBtn').disabled = true; m.textContent = 'Posting…';
+    try {
+      const token = await getToken($('pass2').value);
+      if (!token) throw new Error('No token stored.');
+      const id = newId();
+      const post = { id, url, note, created: new Date().toISOString().replace(/\.\d{3}Z$/, 'Z') };
+      const path = `posts/${id}.json`;
+      const r = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}`, {
+        method: 'PUT',
+        headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: `post: ${url}`, branch: BRANCH, content: utf8b64(JSON.stringify(post, null, 2) + '\n') })
+      });
+      if (r.status === 401) throw new Error('GitHub rejected the token. Open the lock icon to replace it.');
+      if (!r.ok) { const j = await r.json().catch(() => ({})); throw new Error(j.message || ('GitHub returned ' + r.status)); }
+      $('doneFile').textContent = path;
+      $('compose').hidden = true; $('done').hidden = false;
+      $('pass2').value = '';
+      $('again').href = '/post';
+    } catch (err) {
+      m.classList.add('err'); m.textContent = err.message;
+    } finally { $('postBtn').disabled = false; }
+  });
+
+  refreshLock();
+  if (!readRec()) $('token').focus(); else if (!$('url').value) $('url').focus();
+})();
+</script>
+</body>
+</html>
